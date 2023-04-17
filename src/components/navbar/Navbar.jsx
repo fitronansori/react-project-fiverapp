@@ -1,9 +1,19 @@
 import React, { useEffect, useState } from "react";
 import "./Navbar.scss";
+/**
+ * import Link from react-router-dom untuk membuat link ke halaman lain
+ * to digunakan untuk menentukan path yang akan di tuju
+ * import useLocation from react-router-dom untuk mendapatkan path yang sedang aktif
+ */
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 const Navbar = () => {
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
+
+  // mendapatkan path yang sedang aktif
+  const { pathname } = useLocation();
 
   const isActive = () => {
     window.scrollY > 0 ? setActive(true) : setActive(false);
@@ -23,10 +33,13 @@ const Navbar = () => {
   };
 
   return (
-    <div className={active ? "navbar active" : "navbar"}>
+    // jika active bernilai true atau path yang sedang aktif bukan "/ (Home)", maka tambahkan class active ke navbar
+    <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
       <div className="container">
         <div className="logo">
-          <span className="logo-text">Fiverr</span>
+          <Link to={"/"} className="link">
+            <span className="logo-text">fiverr</span>
+          </Link>
           <span className="dot">.</span>
         </div>
 
@@ -51,13 +64,23 @@ const Navbar = () => {
                   {/* if currentUser is a seller, then display the text Gigs and Add New Gig */}
                   {currentUser?.isSeller && (
                     <>
-                      <span>Gigs</span>
-                      <span>Add New Gig</span>
+                      <Link className="link hover" to={"/gigs"}>
+                        Gigs
+                      </Link>
+                      <Link className="link hover" to={"/add"}>
+                        Add New Gig
+                      </Link>
                     </>
                   )}
-                  <span>Order</span>
-                  <span>Messages</span>
-                  <span>Log Out</span>
+                  <Link className="link hover" to={"/orders"}>
+                    Orders
+                  </Link>
+                  <Link className="link hover" to={"/messages"}>
+                    Messages
+                  </Link>
+                  <Link className="link hover" to={"/"}>
+                    Log Out
+                  </Link>
                 </div>
               )}
             </div>
@@ -65,13 +88,39 @@ const Navbar = () => {
         </div>
       </div>
 
-      {active && (
+      {/* jika active bernilai true atau path yang sedang aktif bukan "/ (Home)", maka tampilkan menu  */}
+      {(active || pathname !== "/") && (
         <>
           <hr />
 
           <div className="menu">
-            <span>test</span>
-            <span>test</span>
+            <Link className="link menuLink" to="/">
+              Graphics & Design
+            </Link>
+            <Link className="link menuLink" to="/">
+              Video & Animation
+            </Link>
+            <Link className="link menuLink" to="/">
+              Writing & Translation
+            </Link>
+            <Link className="link menuLink" to="/">
+              AI Services
+            </Link>
+            <Link className="link menuLink" to="/">
+              Digital Marketing
+            </Link>
+            <Link className="link menuLink" to="/">
+              Music & Audio
+            </Link>
+            <Link className="link menuLink" to="/">
+              Programming & Tech
+            </Link>
+            <Link className="link menuLink" to="/">
+              Business
+            </Link>
+            <Link className="link menuLink" to="/">
+              Lifestyle
+            </Link>
           </div>
         </>
       )}
